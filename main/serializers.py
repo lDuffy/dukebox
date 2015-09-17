@@ -53,3 +53,9 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Event
+
+
+class EventListSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Event

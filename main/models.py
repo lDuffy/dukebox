@@ -114,6 +114,8 @@ class AppUser(BaseModel):
 class Event(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
     appUser = models.ForeignKey(AppUser, default=None)
+    lon = models.FloatField(null=True, blank=True)
+    lat = models.FloatField(null=True, blank=True)
 
 
 class Song(BaseModel):

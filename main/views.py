@@ -1,7 +1,7 @@
 from models import AppUser, Event, Song
 from permissions import IsAppUser
 from rest_framework import viewsets
-from serializers import  EventSerializer, SongSerializer, AppUserSerializer
+from serializers import  EventSerializer, SongSerializer, AppUserSerializer, EventListSerializer
 
 
 class AppUserViewSet(viewsets.ModelViewSet):
@@ -17,9 +17,15 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Event to be viewed or edited.
     """
-    permission_classes = (IsAppUser,)
+    # permission_classes = (IsAppUser,)
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return EventListSerializer
+        if self.action == 'retrieve':
+            return EventSerializer
+        return EventListSerializer
 
 
 class SongViewSet(viewsets.ModelViewSet):
