@@ -1,4 +1,4 @@
-from models import AppUser
+from models import CmsUser
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -10,6 +10,6 @@ class IsAppUser(IsAuthenticated):
     def has_permission(self, request, view):
         permission = super(IsAppUser, self).has_permission(request, view)
         try:
-            return permission and request.user.app_user is not None
-        except AppUser.DoesNotExist:
+            return permission and request.user is not None
+        except CmsUser.DoesNotExist:
             return False

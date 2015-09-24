@@ -1,4 +1,4 @@
-from models import AppUser, Event, Song, CmsUser
+from models import  Event, Song, CmsUser
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField, empty
 
@@ -15,20 +15,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CmsUser
-        exclude = ['password']
+        fields = ('id', 'password', 'email', 'first_name', 'last_name')
+        write_only_fields = ('password',)
+        read_only_fields = ('id',)
 
+    def create(self, validated_data):
+        user = CmsUser.objects.create_user(
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
 
-class AppUserSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
-    class Meta:
-        model = AppUser
-        read_only_fields = BASE_READONLY_FIELDS + [
-            'publish',
-        ]
+        return user
 
     def __init__(self, instance=None, data=empty, **kwargs):
-        super(AppUserSerializer, self).__init__(instance, data, **kwargs)
+        super(UserSerializer, self).__init__(instance, data, **kwargs)
 
     def update(self, instance, validated_data):
         user = instance.user
@@ -39,7 +39,7 @@ class AppUserSerializer(serializers.ModelSerializer):
         user.last_name = user_data.get('last_name', user.last_name)
         user.save()
 
-        return super(AppUserSerializer, self).update(instance, validated_data)
+        return super(UserSerializer, self).update(instance, validated_data)
 
 
 class SongSerializer(serializers.HyperlinkedModelSerializer):
@@ -55,7 +55,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         model = Event
 
 
-class EventListSerializer(serializers.HyperlinkedModelSerializer):
+class EventListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event

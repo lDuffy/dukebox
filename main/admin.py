@@ -1,22 +1,22 @@
 from django.contrib import admin
-from models import AppUser, Event, Song
+from models import CmsUser, Event, Song
 
 
-class AppUserAdmin(admin.ModelAdmin):
+class CmsUserAdmin(admin.ModelAdmin):
 
     save_on_top = True
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'appUser']
+    list_display = ['title', 'cmsUser']
     save_on_top = True
 
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ['title', 'event', 'appUser']
+    list_display = ['title', 'event', 'cmsUser']
     save_on_top = True
 
 
-admin.site.register(AppUser, AppUserAdmin)
+admin.site.register(CmsUser, CmsUserAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Song, SongAdmin)

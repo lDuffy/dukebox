@@ -1,16 +1,16 @@
-from models import AppUser, Event, Song
+from models import  Event, Song, CmsUser
 from permissions import IsAppUser
 from rest_framework import viewsets
-from serializers import  EventSerializer, SongSerializer, AppUserSerializer, EventListSerializer
+from serializers import  EventSerializer, SongSerializer,  EventListSerializer, UserSerializer
 
 
-class AppUserViewSet(viewsets.ModelViewSet):
+class CmsUserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows AppUser to be viewed or edited.
     """
     permission_classes = (IsAppUser,)
-    queryset = AppUser.objects.all()
-    serializer_class = AppUserSerializer
+    queryset = CmsUser.objects.all()
+    serializer_class = UserSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):

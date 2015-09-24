@@ -3,7 +3,7 @@ from rest_framework import routers
 import views
 
 router = routers.DefaultRouter()
-router.register(r'appusers', views.AppUserViewSet)
+router.register(r'users', views.CmsUserViewSet)
 router.register(r'events', views.EventViewSet)
 router.register(r'songs', views.SongViewSet)
 

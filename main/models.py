@@ -100,20 +100,9 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class AppUser(BaseModel):
-    user = models.OneToOneField(CmsUser, related_name='app_user', null=True, blank=True)
-
-    def __unicode__(self):
-        return self.name
-
-    @property
-    def name(self):
-        return self.user.email
-
-
 class Event(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
-    appUser = models.ForeignKey(AppUser, default=None)
+    cmsUser = models.ForeignKey(CmsUser, default=None)
     lon = models.FloatField(null=True, blank=True)
     lat = models.FloatField(null=True, blank=True)
 
@@ -121,6 +110,6 @@ class Event(BaseModel):
 class Song(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
     event = models.ForeignKey(Event, default=None, related_name="songs")
-    appUser = models.ForeignKey(AppUser, default=None)
+    cmsUser = models.ForeignKey(CmsUser, default=None)
     count = models.IntegerField(default=0)
     chosen = models.BooleanField(default=False)
