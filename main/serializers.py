@@ -11,11 +11,10 @@ BASE_READONLY_FIELDS = [
 
 
 class UserSerializer(serializers.ModelSerializer):
-    email = ReadOnlyField()
 
     class Meta:
         model = CmsUser
-        fields = ('id', 'password', 'email', 'first_name', 'last_name')
+        fields = ('password', 'email', 'first_name', 'last_name', 'username')
         write_only_fields = ('password',)
         read_only_fields = ('id',)
 
@@ -24,6 +23,10 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        user.first_name = validated_data['first_name']
+        user.last_name = validated_data['last_name']
+        user.username = validated_data['username']
+        user.save()
 
         return user
 
