@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email,
-                          is_staff=is_staff, is_active=True,
+                          is_staff=True, is_active=True,
                           is_superuser=is_superuser,
                           date_joined=now, **extra_fields)
         user.set_password(password)
@@ -37,17 +37,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         return self._create_user(email, password, True, True,
                                  **extra_fields)
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    """
-    Subscribe to user save events to create API token for new users
-    http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication
-    """
-    if created:
-        Token.objects.create(user=instance)
-
 
 class BaseModel(models.Model):
     order = models.PositiveIntegerField(default=1, blank=True, )

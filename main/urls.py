@@ -1,13 +1,15 @@
 from django.conf.urls import url, include
 from rest_framework import routers
-import views
+from rest_framework.authtoken import views
+import view
 
 router = routers.DefaultRouter()
-router.register(r'users', views.CmsUserViewSet)
-router.register(r'events', views.EventViewSet)
-router.register(r'songs', views.SongViewSet)
+router.register(r'users', view.CmsUserViewSet)
+router.register(r'events', view.EventViewSet)
+router.register(r'songs', view.SongViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-token-auth/', views.obtain_auth_token),
 ]
