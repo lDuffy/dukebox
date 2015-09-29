@@ -1,7 +1,9 @@
-from models import  Event, Song, CmsUser
+from models import Event, Song, CmsUser
 from permissions import IsAppUser, IsOwnerOrReadOnly
 from rest_framework import viewsets
-from serializers import  EventSerializer, SongSerializer,  EventListSerializer, UserSerializer
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
+from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer
 
 
 class CmsUserViewSet(viewsets.ModelViewSet):
@@ -17,8 +19,32 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Event to be viewed or edited.
     """
-    permission_classes = (IsAppUser, IsOwnerOrReadOnly,)
+    permission_classes = (IsAppUser, )
     queryset = Event.objects.all()
+
+    @detail_route(methods=['post'])
+    def checkin_user(self, request, pk=None):
+        user = request.user
+        event = Event.objects.get(id=pk)
+
+        cms_user = CmsUser.objects.get(email=user.email)
+
+        if cms_user.checked_in_event is None:
+            cms_user.checked_in_event = event
+            cms_user.save()
+            return Response({'status': 'checked in'})
+        else:
+            return Response(status='400 BAD REQUEST', exception=True)
+
+    @detail_route(methods=['post'])
+    def checkout_user(self, request, pk=None):
+        user = self.get_object()
+
+        cms_user = CmsUser.objects.get(email=user.email)
+
+        cms_user.checked_in_event = None
+        cms_user.save()
+        return Response({'status': 'checked out'})
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -35,4 +61,3 @@ class SongViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-
