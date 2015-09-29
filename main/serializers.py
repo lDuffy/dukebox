@@ -1,9 +1,5 @@
 from models import  Event, Song, CmsUser
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.fields import  empty
-from rest_framework.response import Response
 
 BASE_READONLY_FIELDS = [
     'order',
@@ -11,7 +7,6 @@ BASE_READONLY_FIELDS = [
     'created',
     'modified',
 ]
-
 
 class UserSerializer(serializers.ModelSerializer):
 

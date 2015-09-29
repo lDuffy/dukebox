@@ -8,7 +8,7 @@ class CmsUserAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'cmsUser']
+    list_display = ['title', 'creator']
     save_on_top = True
 
 

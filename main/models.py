@@ -1,13 +1,9 @@
 import uuid
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.db.models.signals import post_save
 from django.utils import timezone
-from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
-from django.conf import settings
-from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
@@ -31,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        return self._create_user(email, password, False, False,
+        return self._create_user(email, password, True, True,
                                  **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
@@ -66,6 +62,8 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
+    checked_in_event = models.ForeignKey('Event', default=None, blank=True, null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -92,7 +90,7 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
 
 class Event(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
-    cmsUser = models.ForeignKey(CmsUser, default=None)
+    creator = models.ForeignKey(CmsUser, default=None)
     lon = models.FloatField(null=True, blank=True)
     lat = models.FloatField(null=True, blank=True)
 
