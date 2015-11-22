@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CmsUser
-        fields = ('first_name', 'last_name', 'username', 'email', )
+        fields = ('first_name', 'last_name', 'username', 'email', 'password')
 
     def create(self, validated_data):
         user = CmsUser.objects.create_user(

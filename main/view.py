@@ -34,12 +34,11 @@ class EventViewSet(viewsets.ModelViewSet):
             cms_user.save()
             return Response({'status': 'checked in'})
         else:
-            return Response(status='400 BAD REQUEST', exception=True)
+            return Response(status='User Already Checked In', exception=True)
 
     @detail_route(methods=['post'])
     def checkout_user(self, request, pk=None):
-        user = self.get_object()
-
+        user = request.user
         cms_user = CmsUser.objects.get(email=user.email)
 
         cms_user.checked_in_event = None
