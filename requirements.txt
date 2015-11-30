@@ -4,6 +4,7 @@ django-ckeditor
 django-extensions==1.4.9
 djangorestframework==3.1.1
 django-filter
+fabric
 pytz
 
 
