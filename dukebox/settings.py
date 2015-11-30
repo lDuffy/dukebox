@@ -19,13 +19,10 @@ ALLOWED_HOSTS = ['dukebox.itsnotrocketscience.rocks']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'su=gy$xxounxjk56yjceg#80c8+007$oiqopgst!qf%_n2kokg'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['dukebox.itnotrocketscience.rocks']
 
 
 # Application definition
