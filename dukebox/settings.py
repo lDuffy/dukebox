@@ -25,7 +25,7 @@ SECRET_KEY = 'su=gy$xxounxjk56yjceg#80c8+007$oiqopgst!qf%_n2kokg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['dukebox.itnotrocketscience.rocks']
 
 
 # Application definition
