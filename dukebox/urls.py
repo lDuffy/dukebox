@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^dukebox/', include('main.urls')),
+    url(r'', include('gcm.urls')),
 ]

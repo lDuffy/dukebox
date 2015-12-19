@@ -98,6 +98,6 @@ class Event(BaseModel):
 class Song(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
     event = models.ForeignKey(Event, default=None, related_name="songs")
-    cmsUser = models.ForeignKey(CmsUser, default=None)
+    cmsUser = models.ForeignKey(CmsUser, default=None, related_name="posted_by")
     count = models.IntegerField(default=0)
     chosen = models.BooleanField(default=False)

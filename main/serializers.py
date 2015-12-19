@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CmsUser
-        fields = ('first_name', 'last_name', 'username', 'email', 'password')
+        exclude = ['password']
 
     def create(self, validated_data):
         user = CmsUser.objects.create_user(
@@ -41,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Song
-        fields = ('title', 'count', 'chosen')
+        exclude = ["modified", "created", "uid"]
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):

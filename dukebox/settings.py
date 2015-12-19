@@ -23,7 +23,7 @@ ALLOWED_HOSTS = ['dukebox.itsnotrocketscience.rocks']
 SECRET_KEY = 'su=gy$xxounxjk56yjceg#80c8+007$oiqopgst!qf%_n2kokg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'main',
+    'gcm',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,6 +54,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'dukebox.urls'
+
+GCM_APIKEY = "AIzaSyCS2L54_7GA7zqiYFA-oFFF9EybfCHdPNg"
 
 TEMPLATES = [
     {

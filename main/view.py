@@ -60,3 +60,7 @@ class SongViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(event=self.request.user.checked_in_event, cmsUser=self.request.user)
+
