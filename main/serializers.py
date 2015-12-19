@@ -41,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Song
-        exclude = ["modified", "created", "uid"]
+        exclude = ["modified", "created", "uid", "url"]
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
