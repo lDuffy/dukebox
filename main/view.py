@@ -1,5 +1,5 @@
 from models import Event, Song, CmsUser
-from permissions import IsAppUser, IsOwnerOrReadOnly
+from permissions import IsAppUser
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response

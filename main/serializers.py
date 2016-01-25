@@ -1,5 +1,6 @@
-from models import  Event, Song, CmsUser
+from models import Event, Song, CmsUser
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 BASE_READONLY_FIELDS = [
     'order',
@@ -8,13 +9,12 @@ BASE_READONLY_FIELDS = [
     'modified',
 ]
 
+
 class UserSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = CmsUser
-        exclude = ['password']
-
-    def create(self, validated_data):
+    def create(self, validated_data, *args, **kwargs):
+        import ipdb
+        ipdb.set_trace()
         user = CmsUser.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password']
@@ -22,20 +22,14 @@ class UserSerializer(serializers.ModelSerializer):
         user.first_name = validated_data['first_name']
         user.last_name = validated_data['last_name']
         user.username = validated_data['username']
+        user.token = Token.objects.create(user=user)
         user.save()
 
         return user
 
-    def update(self, instance, validated_data):
-        user = instance.user
-
-        user_data = validated_data.pop('user')
-        # only first and last name is allowed to change
-        user.first_name = user_data.get('first_name', user.first_name)
-        user.last_name = user_data.get('last_name', user.last_name)
-        user.save()
-
-        return super(UserSerializer, self).update(instance, validated_data)
+    class Meta:
+        model = CmsUser
+        exclude = ['user_permissions', 'groups']
 
 
 class SongSerializer(serializers.HyperlinkedModelSerializer):
@@ -52,6 +46,5 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Event

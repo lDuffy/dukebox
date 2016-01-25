@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
+from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
@@ -63,6 +64,8 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     checked_in_event = models.ForeignKey('Event', default=None, blank=True, null=True)
+
+    token = models.ForeignKey(Token, default=None, null=True, blank=True)
 
     objects = UserManager()
 
