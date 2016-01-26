@@ -13,15 +13,9 @@ BASE_READONLY_FIELDS = [
 class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data, *args, **kwargs):
-        import ipdb
-        ipdb.set_trace()
-        user = CmsUser.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-        user.first_name = validated_data['first_name']
-        user.last_name = validated_data['last_name']
-        user.username = validated_data['username']
+        user = CmsUser.objects.create(validated_data)
+
+        user.save()
         user.token = Token.objects.create(user=user)
         user.save()
 
