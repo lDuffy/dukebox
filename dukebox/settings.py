@@ -87,8 +87,8 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = '<your app id goes here>'
-SOCIAL_AUTH_FACEBOOK_SECRET = '<your app secret goes here'
+SOCIAL_AUTH_FACEBOOK_KEY = '1675878939367621'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fd17e7a40cc32473478a3121223a9b81'
 
 # TEMPLATE_CONTEXT_PROCESSORS = (
 #
@@ -142,3 +142,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+PROPRIETARY_BACKEND_NAME = "Facebook"
