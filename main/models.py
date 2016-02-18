@@ -1,11 +1,39 @@
 import uuid
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from rest_framework.authtoken.models import Token
 
+
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password,
+                     is_staff, is_superuser, **extra_fields):
+        """
+        Creates and saves a User with the given username, email and password.
+        """
+        now = timezone.now()
+        if not email:
+            raise ValueError('Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email,
+                          is_staff=True, is_active=True,
+                          is_superuser=is_superuser,
+                          date_joined=now, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, True, True,
+                                 **extra_fields)
+
+    def create_superuser(self, email, password, **extra_fields):
+        return self._create_user(email, password, True, True,
+                                 **extra_fields)
 
 class BaseModel(models.Model):
     order = models.PositiveIntegerField(default=1, blank=True, )
@@ -25,7 +53,7 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     username = models.CharField(_('username'),  max_length=30, blank=True)
-    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
+    email = models.EmailField(_('email address'), unique=True, blank=False)
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
                     'site.'))
