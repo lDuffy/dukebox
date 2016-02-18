@@ -28,6 +28,7 @@ DEBUG = True
 
 # Application definition
 AUTH_USER_MODEL = 'main.CmsUser'
+SOCIAL_AUTH_USER_MODEL = 'main.CmsUser'
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -87,8 +88,8 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1675878939367621'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'fd17e7a40cc32473478a3121223a9b81'
+SOCIAL_AUTH_FACEBOOK_KEY = '565930543560307'
+SOCIAL_AUTH_FACEBOOK_SECRET = '2ecfc88152175a68788d4b97e50cdd1d'
 
 # TEMPLATE_CONTEXT_PROCESSORS = (
 #

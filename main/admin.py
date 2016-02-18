@@ -3,7 +3,7 @@ from models import CmsUser, Event, Song
 
 
 class CmsUserAdmin(admin.ModelAdmin):
-
+    list_display = ['username']
     save_on_top = True
 
 

@@ -60,6 +60,7 @@ class SongViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(event=self.request.user.checked_in_event, cmsUser=self.request.user)
+
         topic = "/topics/" + str(self.request.user.checked_in_event.pk)
         GCMMessage().send({'message':'my test message'}, to=topic)
 
