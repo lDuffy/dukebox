@@ -91,11 +91,11 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_FACEBOOK_KEY = '565930543560307'
 SOCIAL_AUTH_FACEBOOK_SECRET = '2ecfc88152175a68788d4b97e50cdd1d'
 
-# TEMPLATE_CONTEXT_PROCESSORS = (
-#
-#     'social.apps.django_app.context_processors.backends',
-#     'social.apps.django_app.context_processors.login_redirect',
-# )
+TEMPLATE_CONTEXT_PROCESSORS = (
+
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+)
 
 WSGI_APPLICATION = 'dukebox.wsgi.application'
 
@@ -110,11 +110,10 @@ DATABASES = {
     }
 }
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
