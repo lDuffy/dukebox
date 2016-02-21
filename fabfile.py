@@ -13,6 +13,5 @@ def deploy():
     with cd(code_dir):
         run("source bin/activate")
         run("git pull origin master")
-        run("pip install -r requirements.txt ")
-        run("python manage.py collectstatic --noinput")
+        run("./setupdatabase.sh")
         run("sudo service apache2 restart")
