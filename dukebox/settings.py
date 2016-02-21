@@ -25,7 +25,6 @@ SECRET_KEY = 'su=gy$xxounxjk56yjceg#80c8+007$oiqopgst!qf%_n2kokg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 # Application definition
 AUTH_USER_MODEL = 'main.CmsUser'
 SOCIAL_AUTH_USER_MODEL = 'main.CmsUser'

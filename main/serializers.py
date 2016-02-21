@@ -1,4 +1,4 @@
-from models import Event, Song, CmsUser
+from models import Event, Song, CmsUser, Like
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -11,7 +11,6 @@ BASE_READONLY_FIELDS = [
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     def create(self, validated_data, *args, **kwargs):
         user = CmsUser.objects.create(
             email=validated_data['email'],
@@ -48,3 +47,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class EventListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like

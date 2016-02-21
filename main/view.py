@@ -1,26 +1,22 @@
 from gcm.api import GCMMessage
-from models import Event, Song, CmsUser
+from models import Event, Song, CmsUser, Like
 from permissions import IsAppUser
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
-from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer
+from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer, LikeSerializer
+
+# API endpoint that allows Models to be viewed or edited.
 
 
 class CmsUserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows AppUser to be viewed or edited.
-    """
     # permission_classes = (IsAppUser,)
     queryset = CmsUser.objects.all()
     serializer_class = UserSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Event to be viewed or edited.
-    """
-    permission_classes = (IsAppUser, )
+    permission_classes = (IsAppUser,)
     queryset = Event.objects.all()
 
     @detail_route(methods=['post'])
@@ -51,9 +47,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
 
 class SongViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Event to be viewed or edited.
-    """
     permission_classes = (IsAppUser,)
     queryset = Song.objects.all()
     serializer_class = SongSerializer
@@ -62,5 +55,10 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer.save(event=self.request.user.checked_in_event, cmsUser=self.request.user)
 
         topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-        GCMMessage().send({'message':'my test message'}, to=topic)
+        GCMMessage().send({'message': 'my test message'}, to=topic)
 
+
+class LikeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAppUser,)
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer

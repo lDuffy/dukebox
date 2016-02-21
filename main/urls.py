@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 router.register(r'users', view.CmsUserViewSet)
 router.register(r'events', view.EventViewSet)
 router.register(r'songs', view.SongViewSet)
+router.register(r'likes', view.LikeViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
