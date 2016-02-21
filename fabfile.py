@@ -14,4 +14,6 @@ def deploy():
         run("source bin/activate")
         run("git pull origin master")
         run("./setupdatabase.sh")
+        run("sudo chown www-data:www-data .h")
+        run("sudo chown www-data:www-data db.sqlite3")
         run("sudo service apache2 restart")
