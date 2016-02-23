@@ -20,7 +20,7 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Song
-        fields = ('title', 'event', 'cmsUser', 'likes')
+        fields = ('title', 'event', 'cmsUser', 'likes', 'uid')
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
@@ -38,3 +38,4 @@ class EventListSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
+        exclude = ['order']
