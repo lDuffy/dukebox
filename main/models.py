@@ -25,8 +25,8 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
-    username = models.CharField(_('username'), max_length=30, blank=True)
-    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
+    username = models.CharField(_('username'), unique=True, max_length=30, blank=True)
+    email = models.EmailField(_('email address'), blank=True, null=True)
     is_staff = models.BooleanField(_('staff status'), default=False,
                                    help_text=_('Designates whether the user can log into this admin '
                                                'site.'))
@@ -40,7 +40,7 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
     class Meta:
         verbose_name = _('user')

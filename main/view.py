@@ -62,3 +62,7 @@ class LikeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
+
+    def perform_create(self, serializer):
+        song = Song.objects.get(id=self.request.data["song"])
+        serializer.save(user=self.request.user, song=song)
