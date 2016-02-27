@@ -63,6 +63,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
-    def perform_create(self, serializer):
-        topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-        GCMMessage().send({'message': 'my test message'}, to=topic)
+    # def perform_create(self, serializer):
+    #     topic = "/topics/" + str(self.request.user.checked_in_event.pk)
+    #     GCMMessage().send({'message': 'my test message'}, to=topic)

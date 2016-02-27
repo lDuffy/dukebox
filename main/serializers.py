@@ -17,11 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 class SongSerializer(serializers.ModelSerializer):
     likes = serializers.IntegerField(source='like_set.count', read_only=True)
-    liked = serializers.ReadOnlyField(source='liked')
+    liked = serializers.ReadOnlyField(source='is_liked')
 
     class Meta:
         model = Song
-
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):

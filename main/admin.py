@@ -18,7 +18,7 @@ class LikesInLine(admin.TabularInline):
 
 
 class SongAdmin(admin.ModelAdmin):
-    list_display = ['title', 'event', 'cmsUser', 'liked']
+    list_display = ['title', 'event', 'cmsUser', 'is_liked']
     save_on_top = True
 
     inlines = [

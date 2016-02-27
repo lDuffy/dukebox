@@ -74,7 +74,7 @@ class Song(BaseModel):
     cmsUser = models.ForeignKey(CmsUser, default=None, related_name="posted_by")
     chosen = models.BooleanField(default=False)
 
-    def liked(self):
+    def is_liked(self):
         try:
             like = Like.objects.get(user=self.cmsUser, song=self)
             return like is not None
