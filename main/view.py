@@ -64,5 +64,5 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
 
     def perform_create(self, serializer):
-        song = Song.objects.get(id=self.request.data["song"])
-        serializer.save(user=self.request.user, song=song)
+        topic = "/topics/" + str(self.request.user.checked_in_event.pk)
+        GCMMessage().send({'message': 'my test message'}, to=topic)

@@ -15,12 +15,13 @@ class UserSerializer(serializers.ModelSerializer):
         exclude = ['user_permissions', 'groups']
 
 
-class SongSerializer(serializers.HyperlinkedModelSerializer):
+class SongSerializer(serializers.ModelSerializer):
     likes = serializers.IntegerField(source='like_set.count', read_only=True)
+    liked = serializers.ReadOnlyField(source='liked')
 
     class Meta:
         model = Song
-        fields = ('title', 'event', 'cmsUser', 'likes')
+
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,5 +37,7 @@ class EventListSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Like
