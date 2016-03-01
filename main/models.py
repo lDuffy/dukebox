@@ -74,17 +74,10 @@ class Song(BaseModel):
     cmsUser = models.ForeignKey(CmsUser, default=None, related_name="posted_by")
     chosen = models.BooleanField(default=False)
 
-    def is_liked(self):
-        try:
-            like = Like.objects.get(user=self.cmsUser, song=self)
-            return like is not None
-        except Exception:
-            return False
-
 
 class Like(BaseModel):
     song = models.ForeignKey(Song)
-    user = models.ForeignKey(CmsUser)
+    cmsUser = models.ForeignKey(CmsUser)
 
     class Meta:
-        unique_together = (('song', 'user'),)
+        unique_together = (('song', 'cmsUser'),)

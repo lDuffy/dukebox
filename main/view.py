@@ -62,7 +62,3 @@ class LikeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-
-    # def perform_create(self, serializer):
-    #     topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-    #     GCMMessage().send({'message': 'my test message'}, to=topic)

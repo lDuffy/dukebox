@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from models import Event, Song, CmsUser, Like
 from rest_framework import serializers
 
@@ -17,7 +18,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class SongSerializer(serializers.ModelSerializer):
     likes = serializers.IntegerField(source='like_set.count', read_only=True)
-    liked = serializers.ReadOnlyField(source='is_liked')
+    liked = serializers.SerializerMethodField('is_liked')
+
+    def is_liked(self, song):
+        try:
+            like = Like.objects.get(cmsUser=self._kwargs[u'context'][u'request'].user, song=song)
+            return like.id
+        except ObjectDoesNotExist:
+            return -1
 
     class Meta:
         model = Song
@@ -36,7 +44,8 @@ class EventListSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    cmsUser = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Like
+        exclude = ['order']
