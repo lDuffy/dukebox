@@ -22,9 +22,9 @@ class SongSerializer(serializers.ModelSerializer):
 
     def is_liked(self, song):
         try:
-            like = Like.objects.get(cmsUser=self._kwargs[u'context'][u'request'].user, song=song)
+            like = Like.objects.get(cmsUser=self.context['request'].user, song=song)
             return like.id
-        except ObjectDoesNotExist:
+        except Exception:
             return -1
 
     class Meta:
