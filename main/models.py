@@ -1,7 +1,8 @@
 import uuid
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 from django.utils import timezone
+from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from rest_framework.authtoken.models import Token
@@ -64,8 +65,12 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
 class Event(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
     creator = models.ForeignKey(CmsUser, default=None)
-    lon = models.FloatField(null=True, blank=True)
+    long = models.FloatField(null=True, blank=True)
     lat = models.FloatField(null=True, blank=True)
+    details = models.CharField(null=True, blank=True)
+    place = models.CharField(null=True, blank=True)
+    start_date = models.DateField(default=datetime.now, blank=True)
+    end_date = models.DateField(default=datetime.now, blank=True)
 
 
 class Song(BaseModel):
