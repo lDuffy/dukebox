@@ -16,9 +16,6 @@ def deploy():
         run("./setupdatabase.sh")
         run("sudo chown www-data:www-data .")
         run("sudo chown www-data:www-data db.sqlite3")
-
-        # run("pip install -r requirements.txt ")
-        # run("python manage.py collectstatic --noinput")
         run("sudo service apache2 restart")
 
 

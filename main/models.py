@@ -67,8 +67,8 @@ class Event(BaseModel):
     creator = models.ForeignKey(CmsUser, default=None)
     long = models.FloatField(null=True, blank=True)
     lat = models.FloatField(null=True, blank=True)
-    details = models.CharField(null=True, blank=True)
-    place = models.CharField(null=True, blank=True)
+    details = models.CharField(max_length=300, null=True, blank=True)
+    place = models.CharField(max_length=300, null=True, blank=True)
     start_date = models.DateField(default=datetime.now, blank=True)
     end_date = models.DateField(default=datetime.now, blank=True)
 

@@ -1,6 +1,6 @@
 #!/bin/bash
-rm -f db.sqlite3
-rm -r main/migrations
+#rm -f db.sqlite3
+#rm -r main/migrations
 pip install -r requirements.txt
 python manage.py syncdb --noinput
 python manage.py makemigrations
