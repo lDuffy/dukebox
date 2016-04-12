@@ -18,6 +18,7 @@ class CmsUserViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
     @detail_route(methods=['post'])
     def checkin_user(self, request, pk=None):
@@ -44,6 +45,11 @@ class EventViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return EventSerializer
         return EventListSerializer
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        cms_user = CmsUser.objects.get(username=user.username)
+        serializer.save(creator=cms_user)
 
 
 class SongViewSet(viewsets.ModelViewSet):
