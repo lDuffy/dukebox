@@ -22,10 +22,12 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['post'])
     def checkin_user(self, request, pk=None):
+        import ipdb
+        ipdb.set_trace()
         user = request.user
         event = Event.objects.get(id=pk)
 
-        cms_user = CmsUser.objects.get(email=user.username)
+        cms_user = CmsUser.objects.get(username=user.username)
         cms_user.checked_in_event = event
         cms_user.save()
         return Response({'status': 'checked in'})
@@ -33,7 +35,7 @@ class EventViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'])
     def checkout_user(self, request, pk=None):
         user = request.user
-        cms_user = CmsUser.objects.get(email=user.username)
+        cms_user = CmsUser.objects.get(username=user.username)
 
         cms_user.checked_in_event = None
         cms_user.save()
