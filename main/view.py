@@ -22,8 +22,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['post'])
     def checkin_user(self, request, pk=None):
-        import ipdb
-        ipdb.set_trace()
         user = request.user
         event = Event.objects.get(id=pk)
 
