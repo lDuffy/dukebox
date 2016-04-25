@@ -7,12 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from rest_framework.authtoken.models import Token
 
-  # PLAYBACK_STATES = (
-  #       ('playing', 'Playing'),
-  #       ('paused', 'Paused'),
-  #      ('played', 'Played'),
-  #      ('queued', 'Queued'),
-  #  )
 
 class BaseModel(models.Model):
     order = models.PositiveIntegerField(default=1, blank=True, )
@@ -81,13 +75,24 @@ class Event(BaseModel):
 
 
 class Song(BaseModel):
+    PLAYING = 'playing'
+    PAUSED = 'paused'
+    PLAYED = 'played'
+    QUEUED = 'queued'
+    PLAYBACK_STATES = (
+        (PLAYING, 'Playing'),
+        (PAUSED, 'Paused'),
+        (PLAYED, 'Played'),
+        (QUEUED, 'Queued'),
+    )
+
     title = models.CharField(_('title'), max_length=30, blank=True)
     event = models.ForeignKey(Event, default=None, related_name="songs")
     cmsUser = models.ForeignKey(CmsUser, default=None, related_name="posted_by")
     chosen = models.BooleanField(default=False)
-    #provider_id = models.CharField(max_length=300, null=True, blank=True)
-    #provider = models.CharField(max_length=30, null=True, blank=True)
-    #playback_status = models.ChoiceField(choices=PLAYBACK_STATES,default=queued)
+    provider_id = models.CharField(max_length=300, null=True, blank=True)
+    provider = models.CharField(max_length=30, null=True, blank=True)
+    playback_status = models.CharField(max_length=10, choices=PLAYBACK_STATES, default=QUEUED)
 
 
 class Like(BaseModel):
