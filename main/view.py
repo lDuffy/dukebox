@@ -50,6 +50,14 @@ class EventViewSet(viewsets.ModelViewSet):
         user = self.request.user
         cms_user = CmsUser.objects.get(username=user.username)
         serializer.save(creator=cms_user)
+    
+    #play(provider_id):
+        #set curret playing song to played, set new song from id to playing.
+        #send gcm event that list has been updated
+    
+    #pause():
+        #set current playing song to paused
+        #send gcm event notifying users
 
 
 class SongViewSet(viewsets.ModelViewSet):
