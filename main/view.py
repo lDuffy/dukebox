@@ -6,6 +6,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer, LikeSerializer
 
+
 # API endpoint that allows Models to be viewed or edited.
 
 
@@ -67,18 +68,17 @@ class EventViewSet(viewsets.ModelViewSet):
             pass
 
         try:
-            next_song = songs.get(provider_id=pk)
+            next_song = songs.get(provider_id=request.query_params.get('song_id', None))
             if next_song:
                 next_song.playback_status = Song.PLAYING
                 next_song.save()
-                topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-                GCMMessage().send({'message': 'playing' + pk}, to=topic)
+                self.send_gcm_message(pk)
                 return Response({'status': 'playing' + pk})
         except Song.DoesNotExist:
             return Response({'error': 'invalid song id' + pk})
 
-    @detail_route(methods=['post'])
-    def pause(self, request):
+    @detail_route(methods=['get'])
+    def pause(self, request, pk=None):
 
         cms_user = CmsUser.objects.get(username=request.user.username)
         event = cms_user.checked_in_event
@@ -89,8 +89,7 @@ class EventViewSet(viewsets.ModelViewSet):
             if current_song:
                 current_song.playback_status = Song.PAUSED
                 current_song.save()
-                topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-                GCMMessage().send({'message': 'paused'}, to=topic)
+                self.send_gcm_message(pk)
                 return Response({'status': 'paused'})
         except Song.DoesNotExist:
             pass
@@ -100,10 +99,16 @@ class EventViewSet(viewsets.ModelViewSet):
             if current_song:
                 current_song.playback_status = Song.PLAYING
                 current_song.save()
-                topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-                GCMMessage().send({'message': 'playing'}, to=topic)
+                self.send_gcm_message(pk)
                 return Response({'status': 'playing'})
         except Song.DoesNotExist:
+            pass
+
+    def send_gcm_message(self, pk):
+        try:
+            topic = "/topics/" + str(self.request.user.checked_in_event.pk)
+            GCMMessage().send({'message': 'event' + pk}, to=topic)
+        except Exception:
             pass
 
 
