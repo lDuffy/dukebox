@@ -16,6 +16,38 @@ class CmsUserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+def send_gcm_message(status, pk):
+    try:
+        topic = "/topics/" + str(pk)
+        GCMMessage().send({'message': 'event ' + status + ' ' + pk}, to=topic)
+    except Exception:
+        pass
+
+
+def set_song_status(current_song, status, pk):
+    if current_song:
+        current_song.playback_status = status
+        current_song.save()
+        if pk:
+            send_gcm_message(status, pk)
+
+
+def get_song(request):
+    cms_user = CmsUser.objects.get(username=request.user.username)
+    event = cms_user.checked_in_event
+    songs = Song.objects.all().filter(event=event)
+    return songs
+
+
+def update_song(songs, current_status, update_status, pk):
+    try:
+        current_song = songs.get(playback_status=current_status)
+        set_song_status(current_song, update_status, pk)
+        return True
+    except Song.DoesNotExist:
+        return False
+
+
 class EventViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
     queryset = Event.objects.all()
@@ -55,61 +87,25 @@ class EventViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'])
     def play(self, request, pk=None):
 
-        cms_user = CmsUser.objects.get(username=request.user.username)
-        event = cms_user.checked_in_event
-        songs = Song.objects.all().filter(event=event)
+        songs = get_song(request)
 
-        try:
-            current_song = songs.get(playback_status=Song.PLAYING)
-            if current_song:
-                current_song.playback_status = Song.PLAYED
-                current_song.save()
-        except Song.DoesNotExist:
-            pass
+        update_song(songs, Song.PLAYING, Song.PLAYED, None)
+        update_song(songs, Song.PAUSED, Song.PLAYED, None)
 
         try:
             next_song = songs.get(provider_id=request.query_params.get('song_id', None))
-            if next_song:
-                next_song.playback_status = Song.PLAYING
-                next_song.save()
-                self.send_gcm_message(pk)
-                return Response({'status': 'playing' + pk})
+            set_song_status(next_song, Song.PLAYING, pk)
+            return Response({'status': 'playing' + pk})
         except Song.DoesNotExist:
             return Response({'error': 'invalid song id' + pk})
 
     @detail_route(methods=['get'])
     def pause(self, request, pk=None):
-
-        cms_user = CmsUser.objects.get(username=request.user.username)
-        event = cms_user.checked_in_event
-        songs = Song.objects.all().filter(event=event)
-
-        try:
-            current_song = songs.get(playback_status=Song.PLAYING)
-            if current_song:
-                current_song.playback_status = Song.PAUSED
-                current_song.save()
-                self.send_gcm_message(pk)
-                return Response({'status': 'paused'})
-        except Song.DoesNotExist:
-            pass
-
-        try:
-            current_song = songs.get(playback_status=Song.PAUSED)
-            if current_song:
-                current_song.playback_status = Song.PLAYING
-                current_song.save()
-                self.send_gcm_message(pk)
-                return Response({'status': 'playing'})
-        except Song.DoesNotExist:
-            pass
-
-    def send_gcm_message(self, pk):
-        try:
-            topic = "/topics/" + str(self.request.user.checked_in_event.pk)
-            GCMMessage().send({'message': 'event' + pk}, to=topic)
-        except Exception:
-            pass
+        songs = get_song(request)
+        if update_song(songs, Song.PLAYING, Song.PAUSED, pk):
+            return Response({'status': 'paused'})
+        elif update_song(songs, Song.PAUSED, Song.PLAYING, pk):
+            return Response({'status': 'playing'})
 
 
 class SongViewSet(viewsets.ModelViewSet):
