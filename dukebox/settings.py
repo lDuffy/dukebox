@@ -59,7 +59,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'dukebox.urls'
 
-GCM_APIKEY = "AIzaSyCS2L54_7GA7zqiYFA-oFFF9EybfCHdPNg"
+GCM_APIKEY = "AIzaSyClO0BkrFxA_QTrw3YxkfIhfdwKigcOxNc"
 
 TEMPLATES = [
     {
