@@ -30,6 +30,7 @@ AUTH_USER_MODEL = 'main.CmsUser'
 SOCIAL_AUTH_USER_MODEL = 'main.CmsUser'
 INSTALLED_APPS = (
     'django.contrib.admin',
+    'django.contrib.gis',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -108,9 +109,13 @@ WSGI_APPLICATION = 'dukebox.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'dukeboxdb',
+        'USER': 'dukebox',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

@@ -2,6 +2,7 @@ import uuid
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 from django.utils import timezone
+from django.contrib.gis.db import models
 from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
@@ -72,6 +73,7 @@ class Event(BaseModel):
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
     public = models.BooleanField(default=True)
+    geo_cords = models.PointField(null=True, blank=True)
 
 
 class Song(BaseModel):
