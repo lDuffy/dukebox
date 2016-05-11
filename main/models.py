@@ -72,7 +72,7 @@ class Event(BaseModel):
     place = models.CharField(max_length=300, null=True, blank=True)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
-    public = models.BooleanField(default=True)
+    is_public = models.BooleanField(default=True)
     geo_cords = models.PointField(null=True, blank=True)
 
 
