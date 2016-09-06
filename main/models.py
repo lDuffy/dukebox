@@ -73,7 +73,14 @@ class Event(BaseModel):
     start_date = models.DateTimeField(default=datetime.now, blank=True)
     end_date = models.DateTimeField(default=datetime.now, blank=True)
     is_public = models.BooleanField(default=True)
-    geo_cords = models.PointField(null=True, blank=True)
+    geo_cords = models.PointField(geography=True, null=True, blank=True)
+
+    gis = models.GeoManager()
+    objects = models.Manager()
+
+    def __unicode__(self):
+        return self.title
+
 
 
 class Song(BaseModel):

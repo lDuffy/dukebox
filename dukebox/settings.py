@@ -27,6 +27,7 @@ DEBUG = True
 
 # Application definition
 AUTH_USER_MODEL = 'main.CmsUser'
+AUTH_PROFILE_MODULE = 'main.CmsUser'
 SOCIAL_AUTH_USER_MODEL = 'main.CmsUser'
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -37,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'django_facebook',
     'rest_framework',
     'oauth2_provider',
     'social.apps.django_app.default',
@@ -75,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social.apps.django_app.context_processors.backends',
                 'social.apps.django_app.context_processors.login_redirect',
+                'django_facebook.context_processors.facebook',
             ],
         },
 
@@ -87,6 +90,7 @@ AUTHENTICATION_BACKENDS = (
     # Facebook OAuth2
     'social.backends.facebook.FacebookAppOAuth2',
     'social.backends.facebook.FacebookOAuth2',
+    'django_facebook.auth_backends.FacebookBackend',
 
     # django social rest
     'rest_framework_social_oauth2.backends.DjangoOAuth2',
@@ -95,6 +99,14 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_FACEBOOK_KEY = '565930543560307'
 SOCIAL_AUTH_FACEBOOK_SECRET = '2ecfc88152175a68788d4b97e50cdd1d'
+
+FACEBOOK_APP_ID = '565930543560307'
+FACEBOOK_APP_SECRET = '2ecfc88152175a68788d4b97e50cdd1d'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email',
+}
 
 TEMPLATE_CONTEXT_PROCESSORS = (
 

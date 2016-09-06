@@ -1,8 +1,10 @@
+from django.contrib.gis import measure
+from django.contrib.gis.geos import Point
 from gcm.api import GCMMessage
 from models import Event, Song, CmsUser, Like
 from permissions import IsAppUser
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer, LikeSerializer
 
@@ -106,6 +108,25 @@ class EventViewSet(viewsets.ModelViewSet):
             return Response({'status': 'paused'})
         elif update_song(songs, Song.PAUSED, Song.PLAYING, pk):
             return Response({'status': 'playing'})
+
+    @list_route()
+    def public_nearby_events(self, request):
+        search_point = Point(float(request.GET.get('lng')), float(request.GET.get('lat')))
+        distance_from_point = {'km': 50}
+        result = Event.gis.filter(is_public=True, geo_cords__distance_lte=(search_point, measure.D(**distance_from_point))).distance(search_point).order_by('distance')
+        page = self.paginate_queryset(result)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(result, many=True)
+        return Response(serializer.data)
+
+    @list_route()
+    def friends_events(self, request):
+        events = Event.objects.all()
+        serializer = self.get_serializer(events, many=True)
+        return Response(serializer.data)
 
 
 class SongViewSet(viewsets.ModelViewSet):
