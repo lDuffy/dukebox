@@ -2,6 +2,7 @@ from django.contrib.gis import measure
 from django.contrib.gis.geos import Point
 from gcm.api import GCMMessage
 from models import Event, Song, CmsUser, Like
+from open_facebook.api import OpenFacebook
 from permissions import IsAppUser
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route, list_route
@@ -125,6 +126,11 @@ class EventViewSet(viewsets.ModelViewSet):
     @list_route()
     def friends_events(self, request):
         events = Event.objects.all()
+        facebook = OpenFacebook(request._auth)
+        friends = facebook.get('me/friends')
+        friend_ids = friends[u'data']
+
+        # events.get(creator)
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 
