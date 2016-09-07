@@ -127,12 +127,14 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def friends_events(self, request):
-        events = Event.objects.all()
         facebook = OpenFacebook(request._auth)
         friends = facebook.get('me/friends')
-        friend_ids = friends[u'data']
+        friends_ids = []
+        for friend in friends[u'data']:
+            friends_ids.append(friend[u'id'])
 
-        # events.get(creator)
+        events = Event.objects.filter(social_user_uid__in=friends_ids)
+
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 
