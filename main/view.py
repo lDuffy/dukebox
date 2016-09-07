@@ -85,7 +85,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         cms_user = CmsUser.objects.get(username=user.username)
-        serializer.save(creator=cms_user)
+        serializer.save(creator=cms_user, social_user_uid=user.social_user.uid)
 
     @detail_route(methods=['post'])
     def play(self, request, pk=None):
@@ -114,7 +114,9 @@ class EventViewSet(viewsets.ModelViewSet):
     def public_nearby_events(self, request):
         search_point = Point(float(request.GET.get('lng')), float(request.GET.get('lat')))
         distance_from_point = {'km': 50}
-        result = Event.gis.filter(is_public=True, geo_cords__distance_lte=(search_point, measure.D(**distance_from_point))).distance(search_point).order_by('distance')
+        result = Event.gis.filter(is_public=True,
+                                  geo_cords__distance_lte=(search_point, measure.D(**distance_from_point))).distance(
+            search_point).order_by('distance')
         page = self.paginate_queryset(result)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

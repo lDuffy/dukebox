@@ -74,6 +74,7 @@ class Event(BaseModel):
     end_date = models.DateTimeField(default=datetime.now, blank=True)
     is_public = models.BooleanField(default=True)
     geo_cords = models.PointField(geography=True, null=True, blank=True)
+    social_user_uid = models.CharField(max_length=300, null=True, blank=True)
 
     gis = models.GeoManager()
     objects = models.Manager()
