@@ -138,6 +138,14 @@ class EventViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 
+    @list_route()
+    def search_events(self, request):
+        search_term = request.GET.get('search_term')
+        events = Event.objects.filter(title__icontains=search_term)
+
+        serializer = self.get_serializer(events, many=True)
+        return Response(serializer.data)
+
 
 class SongViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAppUser,)
