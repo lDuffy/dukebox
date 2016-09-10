@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    # 'django_facebook',
+    'django_facebook',
     'rest_framework',
     'oauth2_provider',
     'social.apps.django_app.default',
