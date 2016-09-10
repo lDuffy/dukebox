@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.contrib.gis.db.models.fields
 import django_extensions.db.fields
 import django.contrib.auth.models
 import django.utils.timezone
@@ -55,8 +56,11 @@ class Migration(migrations.Migration):
                 ('lat', models.FloatField(null=True, blank=True)),
                 ('details', models.CharField(max_length=300, null=True, blank=True)),
                 ('place', models.CharField(max_length=300, null=True, blank=True)),
-                ('start_date', models.DateField(default=django.utils.datetime_safe.datetime.now, blank=True)),
-                ('end_date', models.DateField(default=django.utils.datetime_safe.datetime.now, blank=True)),
+                ('start_date', models.DateTimeField(default=django.utils.datetime_safe.datetime.now, blank=True)),
+                ('end_date', models.DateTimeField(default=django.utils.datetime_safe.datetime.now, blank=True)),
+                ('is_public', models.BooleanField(default=True)),
+                ('geo_cords', django.contrib.gis.db.models.fields.PointField(srid=4326, null=True, geography=True, blank=True)),
+                ('social_user_uid', models.CharField(max_length=300, null=True, blank=True)),
                 ('creator', models.ForeignKey(default=None, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -86,6 +90,9 @@ class Migration(migrations.Migration):
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, editable=False, blank=True)),
                 ('title', models.CharField(max_length=30, verbose_name='title', blank=True)),
                 ('chosen', models.BooleanField(default=False)),
+                ('provider_id', models.CharField(max_length=300, null=True, blank=True)),
+                ('provider', models.CharField(max_length=30, null=True, blank=True)),
+                ('playback_status', models.CharField(default=b'queued', max_length=10, choices=[(b'playing', b'Playing'), (b'paused', b'Paused'), (b'played', b'Played'), (b'queued', b'Queued')])),
                 ('cmsUser', models.ForeignKey(related_name='posted_by', default=None, to=settings.AUTH_USER_MODEL)),
                 ('event', models.ForeignKey(related_name='songs', default=None, to='main.Event')),
             ],
