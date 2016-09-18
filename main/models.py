@@ -66,8 +66,6 @@ class CmsUser(AbstractBaseUser, PermissionsMixin):
 class Event(BaseModel):
     title = models.CharField(_('title'), max_length=30, blank=True)
     creator = models.ForeignKey(CmsUser, default=None)
-    long = models.FloatField(null=True, blank=True)
-    lat = models.FloatField(null=True, blank=True)
     details = models.CharField(max_length=300, null=True, blank=True)
     place = models.CharField(max_length=300, null=True, blank=True)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
@@ -81,7 +79,6 @@ class Event(BaseModel):
 
     def __unicode__(self):
         return self.title
-
 
 
 class Song(BaseModel):

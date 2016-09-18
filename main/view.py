@@ -112,7 +112,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @list_route()
     def public_nearby_events(self, request):
-        search_point = Point(float(request.GET.get('lng')), float(request.GET.get('lat')))
+        search_point = Point(float(request.GET.get('lat')), float(request.GET.get('lng')))
         distance_from_point = {'km': 50}
         result = Event.gis.filter(is_public=True,
                                   geo_cords__distance_lte=(search_point, measure.D(**distance_from_point))).distance(
