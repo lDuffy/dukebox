@@ -5,7 +5,7 @@ from models import Event, Song, CmsUser, Like
 from open_facebook.api import OpenFacebook
 from permissions import IsAppUser
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework.response import Response
 from serializers import EventSerializer, SongSerializer, EventListSerializer, UserSerializer, LikeSerializer
 
@@ -14,9 +14,14 @@ from serializers import EventSerializer, SongSerializer, EventListSerializer, Us
 
 
 class CmsUserViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAppUser,)
+    permission_classes = (IsAppUser,)
     queryset = CmsUser.objects.all()
     serializer_class = UserSerializer
+
+    @list_route()
+    def current_user(self, request, pk=None):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
 
 
 def send_gcm_message(status, pk):
